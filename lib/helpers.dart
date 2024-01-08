@@ -20,8 +20,16 @@ class EpsonEPOSHelper {
 
   EPSONSeries? getSeries(String modelName) {
     if (modelName.isEmpty) return null;
-    return epsonSeries.firstWhere(
-        (element) => element.models.contains(modelName),
-        orElse: null);
+    return EPSONSeries(id: "TM_M30II", models: [
+      "TM-m30II",
+      "TM-m30II-H",
+      "TM-m30II-NT",
+      "TM-m30II-S",
+      "TM-m30II-SL"
+    ]);
+    // return EPSONSeries(id: "TM_M30", models: ["TM-m30"]);
+    // return epsonSeries.firstWhere(
+    //     (element) => element.models.contains(modelName),
+    //     orElse: null);
   }
 }
