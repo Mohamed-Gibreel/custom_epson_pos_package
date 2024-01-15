@@ -37,17 +37,22 @@ class EpsonEPOS {
         }
         if (prs.length > 0) {
           return prs.map((e) {
-            final modelName = e['model'];
-            final modelSeries = _eposHelper.getSeries(modelName);
-            return EpsonPrinterModel(
+            var printer = EpsonPrinterModel(
               ipAddress: e['ipAddress'],
               bdAddress: e['bdAddress'],
               macAddress: e['macAddress'],
               type: printType,
-              model: modelName,
-              series: modelSeries?.id,
+              model: e['model'],
+              // series: modelSeries?.id,
+              // series: "TM_M30II",
+              series: "TM_M30",
               target: e['target'],
             );
+            print('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
+            print('Printer:');
+            print(printer.toJson().toString());
+            print('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
+            return printer;
           }).toList();
         } else {
           return [];

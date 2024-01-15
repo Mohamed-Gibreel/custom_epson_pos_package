@@ -46,8 +46,8 @@ class _MyAppState extends State<MyApp> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              Wrap(
+                // mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
                       onPressed: () => onDiscovery(EpsonEPOSPortType.TCP),
@@ -97,6 +97,10 @@ class _MyAppState extends State<MyApp> {
     try {
       List<EpsonPrinterModel>? data = await EpsonEPOS.onDiscovery(type: type);
       if (data != null && data.length > 0) {
+        debugPrint('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
+        debugPrint("Printers Found:");
+        debugPrint(data.toString());
+        debugPrint('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
         data.forEach((element) {
           print(element.toJson());
         });

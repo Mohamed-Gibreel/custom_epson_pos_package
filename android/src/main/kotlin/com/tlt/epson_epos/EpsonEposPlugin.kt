@@ -73,7 +73,9 @@ class EpsonEposPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   private var printers: MutableList<EpsonEposPrinterInfo> = ArrayList()
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+    Log.e("onAttachedToActivity","----onAttachedToActivity Ran----")
     activity = binding.activity;
+    channel.setMethodCallHandler(this)
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
@@ -89,8 +91,9 @@ class EpsonEposPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   }
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    Log.e("onAttachedToEngine","---onAttachedToEngine Ran---")
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "epson_epos")
-    channel.setMethodCallHandler(this)
+//    channel.setMethodCallHandler(this)
     context = flutterPluginBinding.applicationContext
     PrintLog.setLogSettings(
       context,
@@ -220,6 +223,9 @@ class EpsonEposPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     var resp = EpsonEposPrinterResult("onDiscoveryPrinter", false)
     try {
+      Log.e("custom-logs-filter-port-type",filter.portType.toString());
+      Log.e("custom-logs-filter-device-type",filter.deviceType.toString());
+      Log.e("custom-logs-filter-device-model",filter.deviceModel.toString());
       Discovery.start(context, filter, mDiscoveryListener)
       Handler(Looper.getMainLooper()).postDelayed({
         resp.success = true
@@ -229,6 +235,8 @@ class EpsonEposPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         stopDiscovery()
       }, delay)
     } catch (e: Exception) {
+      Log.e("custom-logs-error",e.message.toString());
+      Log.e("custom-logs-error", e.localizedMessage?.toString() ?: "Cannot find localized message");
       Log.e("onDiscoveryPrinter", "Start not working ${call.method}");
       resp.success = false
       resp.message = "Error while search printer"
