@@ -134,6 +134,9 @@ class EpsonEposPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         "onPrint" -> {
           onPrint(call, result)
         }
+        "disconnectPrinter" -> {
+          customDisconnect(call, result)
+        }
         "onGetPrinterInfo" -> {
           onGetPrinterInfo(call, result)
         }
@@ -383,6 +386,43 @@ class EpsonEposPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
       resp.success = false
       resp.message = "Print error"
       result.success(resp.toJSON())
+    }
+  }
+
+  /**
+   * Custom Disconnect Printer
+   */
+  private fun customDisconnect(@NonNull call: MethodCall, @NonNull result: Result) {
+    var resp = EpsonEposPrinterResult("Disconnect Printer: ", false)
+    if (mPrinter == null) {
+      Log.d(logTag, "disconnectPrinter mPrinter null")
+      resp.success = true
+      resp.message = "Cannot find connected a printer"
+      result.success(resp.toJSON())
+      Log.e("logTag", "Cannot find connected a printer")
+      return
+    }
+    while (true) {
+      try {
+        mPrinter!!.clearCommandBuffer()
+        mPrinter!!.disconnect()
+        mPrinter = null
+        mTarget = null
+        Log.d(logTag, "disconnectPrinter mPrinter null")
+        resp.success = true
+        resp.message = "Disconnected printer succesfully"
+        result.success(resp.toJSON())
+        Log.e("logTag", "Disconnected printer succesfully")
+        break
+      } catch (e: Exception) {
+        e.printStackTrace()
+        Log.e(logTag, "disconnectPrinter Error ${e?.message}", e)
+        mPrinter!!.clearCommandBuffer()
+        resp.success = false
+        resp.message = "Error while disconnecting printer: ${e?.message}"
+        result.success(resp.toJSON())
+        throw e
+      }
     }
   }
 

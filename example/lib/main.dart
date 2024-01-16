@@ -71,12 +71,25 @@ class _MyAppState extends State<MyApp> {
                     contentPadding: EdgeInsets.all(0),
                     title: Text('${printer.model} | ${printer.series}'),
                     subtitle: Text('${printer.ipAddress}'),
-                    trailing: TextButton(
-                        onPressed: () {
-                          //onSetPrinterSetting(printer);
-                          onPrintTest(printer);
-                        },
-                        child: Text('Print Test')),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            //onSetPrinterSetting(printer);
+                            EpsonEPOS.disconnectPrinter();
+                          },
+                          child: Text('Disconnect'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            //onSetPrinterSetting(printer);
+                            onPrintTest(printer);
+                          },
+                          child: Text('Print Test'),
+                        ),
+                      ],
+                    ),
                   );
                 },
                 itemCount: printers.length,

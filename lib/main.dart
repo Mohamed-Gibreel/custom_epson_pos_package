@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'enums.dart';
@@ -73,6 +74,11 @@ class EpsonEPOS {
       "target": printer.target
     };
     return await _channel.invokeMethod('onPrint', params);
+  }
+
+  static Future<dynamic> disconnectPrinter() async {
+    var res = await _channel.invokeMethod('disconnectPrinter');
+    return res;
   }
 
   static Future<dynamic> getPrinterSetting(EpsonPrinterModel printer) async {
