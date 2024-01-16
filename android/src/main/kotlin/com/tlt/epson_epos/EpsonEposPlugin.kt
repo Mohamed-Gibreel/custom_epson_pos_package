@@ -256,7 +256,14 @@ class EpsonEposPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   }
 
   private fun isPrinterConnected(@NonNull call: MethodCall, @NonNull result: Result) {
+    var resp = EpsonEposPrinterResult("Is printer connected:", false)
+    resp.message = "Printer is not connected!"
     Log.d(logTag, "isPrinterConnected $call $result")
+    if (mPrinter != null) {
+        resp.success = true
+        resp.message = "Printer is connected!"
+    }
+      result.success(resp.toJSON())
   }
 
   private fun getPrinterSetting(@NonNull call: MethodCall, @NonNull result: Result) {

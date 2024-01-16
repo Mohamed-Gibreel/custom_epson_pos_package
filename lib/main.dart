@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'enums.dart';
@@ -49,10 +48,6 @@ class EpsonEPOS {
               series: "TM_M30",
               target: e['target'],
             );
-            print('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
-            print('Printer:');
-            print(printer.toJson().toString());
-            print('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
             return printer;
           }).toList();
         } else {
@@ -78,6 +73,11 @@ class EpsonEPOS {
 
   static Future<dynamic> disconnectPrinter() async {
     var res = await _channel.invokeMethod('disconnectPrinter');
+    return res;
+  }
+
+  static Future<dynamic> isPrinterConnected() async {
+    var res = await _channel.invokeMethod('isPrinterConnected');
     return res;
   }
 
